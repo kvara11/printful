@@ -10,7 +10,7 @@ use GuzzleHttp\Exception\ConnectException;
 
 class PrintfulApi
 {
-    private string $apiKey;
+    private readonly string $apiKey;
     private string $url = "https://api.printful.com";
     private $client = null;
 
@@ -104,6 +104,8 @@ class PrintfulApi
         $colors = [];
         $sizes  = [];
 
+        $result = [];
+
         foreach ($data as $row) {
 
             if (isset($row['color']) && !in_array($row['color'], $colors)) {
@@ -115,9 +117,15 @@ class PrintfulApi
             }
         }
 
-        return [
-            'colors' => $colors,
-            'sizes' => $sizes,
-        ];
+
+        if (count($colors) > 0) {
+            $result['colors'] = $colors;    
+        }
+
+        if (count($sizes) > 0) {
+            $result['sizes'] = $sizes;    
+        }
+
+        return $result;
     }
 }
