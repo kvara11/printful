@@ -14,7 +14,7 @@ Class RedisCache implements CacheInterface
     public function __construct()
     {
         $this->redis = new Redis();
-        $this->redis->connect('redis', 6379);
+        $this->redis->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
     }
 
 
@@ -32,7 +32,7 @@ Class RedisCache implements CacheInterface
     }
 
 
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         try {
             

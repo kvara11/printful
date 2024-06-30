@@ -1,28 +1,29 @@
 <?php
 
-namespace App\Classes;
+namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\ConnectException;
+use App\Traits\ApiResponses;
 
-class PrintfulApi
+class ApiService
 {
-    private readonly string $apiKey;
+    use ApiResponses;
+
+    private $client;
     private string $url = "https://api.printful.com";
-    private $client = null;
+    private readonly string $apiKey;
 
-
-    public function __construct($apiKey)
+    public function __construct(string $apiKey)
     {
         $this->apiKey = $apiKey;
 
         try {
 
             $this->client = new Client([
-
                 'base_uri' => $this->url,
                 'timeout' => 2.0,
                 'headers' => [
@@ -30,10 +31,10 @@ class PrintfulApi
                     'Content-Type' => 'application/json',
                 ],
             ]);
-        
+
         } catch (RequestException $e) {
             throw new \Exception('Request Error: ' . $e->getMessage());
-
+        
         } catch (ClientException $e) {
             throw new \Exception('Client Error: ' . $e->getMessage());
         
@@ -52,11 +53,11 @@ class PrintfulApi
     /**
      * Fetches all catalog variants for a specific catalog product ID.
      *
-     * @param int $productId The ID of the catalog product.
+     * @param int $id The ID of the catalog product.
      * @return array An array of variant data, empty array if no variants found, or an error array if an error occurs.
      * @throws Exception If client initialization fails.
      */
-    public function getProductCatalogById(int $productId): array
+    public function fetchProductCatalogById(int $id)
     {
         try {
 
@@ -64,15 +65,13 @@ class PrintfulApi
                 throw new \Exception('Initialize client first');
             }
 
-            $response = $this->client->request('GET', "v2/catalog-products/{$productId}/catalog-variants");
+            $response = $this->client->request('GET', "v2/catalog-products/{$id}/catalog-variants");
 
             if ($response->getStatusCode() === 200) {
 
                 $data = json_decode($response->getBody(), true);
-                
                 return $data['data'] ?? [];
             }
-
 
             return [
                 'error' => [
@@ -82,7 +81,6 @@ class PrintfulApi
             ];
 
         } catch (RequestException $e) {
-
             return [
                 'error' => [
                     'message' => $e->getMessage(),
@@ -90,42 +88,5 @@ class PrintfulApi
                 ]
             ];
         }
-    }
-
-
-    /**
-     * Returns an array of unique colors and sizes from an array of catalog variants.
-     *
-     * @param array $data An array of catalog variant data.
-     * @return array array of colors and sizes.
-     */
-    public function getColorsAndSizes(array $data): array
-    {
-        $colors = [];
-        $sizes  = [];
-
-        $result = [];
-
-        foreach ($data as $row) {
-
-            if (isset($row['color']) && !in_array($row['color'], $colors)) {
-                $colors[] = $row['color'];
-            }
-            
-            if (isset($row['size']) && !in_array($row['size'], $sizes)) {
-                $sizes[] = $row['size'];
-            }
-        }
-
-
-        if (count($colors) > 0) {
-            $result['colors'] = $colors;    
-        }
-
-        if (count($sizes) > 0) {
-            $result['sizes'] = $sizes;    
-        }
-
-        return $result;
     }
 }
