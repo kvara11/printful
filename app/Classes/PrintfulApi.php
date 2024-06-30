@@ -49,7 +49,14 @@ class PrintfulApi
     }
 
 
-    public function getCatalogByProductId(int $productId) : array
+    /**
+     * Fetches all catalog variants for a specific catalog product ID.
+     *
+     * @param int $productId The ID of the catalog product.
+     * @return array An array of variant data, empty array if no variants found, or an error array if an error occurs.
+     * @throws Exception If client initialization fails.
+     */
+    public function getProductCatalogById(int $productId): array
     {
         try {
 
@@ -63,11 +70,11 @@ class PrintfulApi
 
                 $data = json_decode($response->getBody(), true);
                 
-                return $this->getColorsAndSizes($data['data']) ?? [];
+                return $data['data'] ?? [];
             }
 
+
             return [
-                
                 'error' => [
                     'message' => $response->getBody(),
                     'code' => $response->getStatusCode(),
@@ -75,7 +82,7 @@ class PrintfulApi
             ];
 
         } catch (RequestException $e) {
-            // throw new \Exception('Request Error: ' . $e->getMessage());
+
             return [
                 'error' => [
                     'message' => $e->getMessage(),
@@ -85,7 +92,14 @@ class PrintfulApi
         }
     }
 
-    private function getColorsAndSizes($data)
+
+    /**
+     * Returns an array of unique colors and sizes from an array of catalog variants.
+     *
+     * @param array $data An array of catalog variant data.
+     * @return array array of colors and sizes.
+     */
+    public function getColorsAndSizes(array $data): array
     {
         $colors = [];
         $sizes  = [];
