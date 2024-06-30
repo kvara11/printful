@@ -29,7 +29,9 @@ trait ApiResponses
     private function sendResponse($responseData, $code)
     {
         http_response_code($code);
-        header('Content-Type: application/json');
+        if (!headers_sent()) {
+            header('Content-Type: application/json');
+        }
 
         echo json_encode($responseData);
         exit;
