@@ -1,12 +1,12 @@
 {
-    "name": "nikak/printful",
     "autoload": {
         "psr-4": {
-            "Nikak\\Printful\\": "src/"
+            "App\\": "app/"
         }
     },
     "require": {
-        "guzzlehttp/guzzle": "^7.8"
+        "guzzlehttp/guzzle": "^7.8",
+        "vlucas/phpdotenv": "^5.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.5"
