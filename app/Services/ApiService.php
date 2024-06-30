@@ -57,7 +57,7 @@ class ApiService
      * @return array An array of variant data, empty array if no variants found, or an error array if an error occurs.
      * @throws Exception If client initialization fails.
      */
-    public function fetchProductCatalogById(int $id)
+    public function fetchProductCatalogById(int $id): array
     {
         try {
 
