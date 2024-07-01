@@ -2,11 +2,6 @@
 
 namespace App\Classes;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
-use GuzzleHttp\Exception\ConnectException;
 
 class Printful
 {
