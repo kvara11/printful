@@ -25,15 +25,25 @@ class Printful
 
         $result = [];
 
-        $colors = array_unique(array_column($this->data, 'color')) ?? [];
-        $sizes = array_unique(array_column($this->data, 'size')) ?? [];
+        $colors = array_map(function ($color) {
+            return ucfirst(trim($color));
+        }, array_column($this->data, 'color'));
 
+        $colors = array_unique($colors) ?? [];
+
+        $sizes = array_map(function ($size) {
+            return strtoupper(trim($size));
+        }, array_column($this->data, 'size'));
+
+        $sizes = array_unique($sizes) ?? [];
+
+        
         if (count($colors) > 0) {
-            $result['colors'] = $colors;
+            $result['colors'] = array_values($colors);
         }
 
         if (count($sizes) > 0) {
-            $result['sizes'] = $sizes;
+            $result['sizes'] = array_values($sizes);
         }
 
         return $result;
