@@ -14,9 +14,9 @@ Class Controller
     private $apiService;
     private $cache;
 
-    public function __construct()
+    public function __construct(string $key)
     {
-        $this->apiService = new ApiService($_ENV['API_KEY']);
+        $this->apiService = new ApiService($key);
         $this->cache = new SimpleCache();
     }
 
