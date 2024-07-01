@@ -43,6 +43,9 @@ Class Controller
 
             return $this->success($result, "Data received successfully", 200);
 
+            // return actual array for testing
+            // return ['data' => $result, 'message' => "Data received successfully", 'code' => 200];
+
         } catch (Exception $e) {
             
             return $this->error(null, "Server error: " . $e->getMessage(), 500);
