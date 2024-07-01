@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Classes\Printful;
 use App\Services\ApiService;
-use App\Classes\RedisCache;
+use App\Classes\SimpleCache;
 use App\Traits\ApiResponses;
 
 Class Controller
@@ -17,7 +17,7 @@ Class Controller
     public function __construct()
     {
         $this->apiService = new ApiService($_ENV['API_KEY']);
-        $this->cache = new RedisCache();
+        $this->cache = new SimpleCache();
     }
 
     public function fetchData()
