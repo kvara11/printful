@@ -1,7 +1,7 @@
 # Printful API Integration
 
 ## Project Description
-This project provides a simple integration with Printful API V2 using Docker with PHP 8.2 and Apache
+This project provides a simple integration with Printful API V2 using Docker with Native PHP 8.2 with autoload and Apache web server (includes manual caching for data).
 
 ## PHPUnit
 For testing:
